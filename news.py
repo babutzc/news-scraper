@@ -3,6 +3,11 @@ from termcolor import colored
 import feedparser
 import requests
 import re
+import argparser
+
+
+
+
 
 def scrapeNu():
     sources = ("https://nu.nl/binnenland", "https://nu.nl/buitenland", "https://nu.nl/politiek")
@@ -40,7 +45,7 @@ def stripHtml(string):
     return p.sub('', string)
     
 
-def scrapeNOS():
+def scrapeNos():
     sources = ("http://feeds.nos.nl/nosnieuwsalgemeen", "http://feeds.nos.nl/nosnieuwsbinnenland", "http://feeds.nos.nl/nosnieuwsbuitenland",
                "http://feeds.nos.nl/nosnieuwstech", "http://feeds.nos.nl/nosnieuwseconomie")
     for source in sources:
@@ -52,10 +57,43 @@ def scrapeNOS():
             print(colored("Source: {0} \n", 'blue').format(post.link))
 
 
+def scrapeTweakers():
+    source = ("http://feeds.feedburner.com/tweakers/nieuws")
+    newsFeed = feedparser.parse(source)
+    for post in newsFeed.entries:
+        # print(post)
+        print(colored("Title: {0}", 'red').format(post.title))
+        print(colored("Message: {0}", 'blue').format(stripHtml(post.description)))
+        print(colored("Source: {0} \n", 'blue').format(post.link))
+
+def scrapeHackersNews():
+    source = ("https://feeds.feedburner.com/TheHackersNews")
+    newsFeed = feedparser.parse(source)
+    for post in newsFeed.entries:
+        # print(post)
+        print(colored("Title: {0}", 'red').format(post.title))
+        print(colored("Message: {0}", 'blue').format(stripHtml(post.description)))
+        print(colored("Source: {0} \n", 'blue').format(post.link))
+
+def scrapeNetsec():
+    source = ("https://www.reddit.com/r/netsec/.rss")
+    newsFeed = feedparser.parse(source)
+    for post in newsFeed.entries:
+        # print(post)
+        print(colored("Title: {0}", 'red').format(post.title))
+        print(colored("Message: {0}", 'blue').format(stripHtml(post.description)))
+        print(colored("Source: {0} \n", 'blue').format(post.link))
+
+
+
 def main():
     scrapeNu()
     scrapeNrc()
-    scrapeNOS()
+    scrapeNos()
+    scrapeNetsec()
+    scrapeTweakers()
+    scrapeHackersNews()
+    scrapeNetsec()
 
 
 if __name__ == '__main__':
